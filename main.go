@@ -18,44 +18,6 @@ const (
 	led_matrix_xml_path        = root + "LedMatrix_LastScript.xml"
 	empty_led_matrix_xml_path  = root + "LedMatrix_LastScript.xml.empty"
 	backup_led_matrix_xml_path = root + "LedMatrix_LastScript.xml.default"
-	empty_led_matrix_xml       = `<root>
-    <header>AURA_3.0</header>
-    <version>1.0</version>
-    <effectProvider>
-        <period>-1</period>
-        <queue>
-            <effect key="anime_GA401IV_0">
-                <viewport>GA401IV_0</viewport>
-                <trigger>OneTime</trigger>
-                <delay>0</delay>
-                <duration>-1</duration>
-                <layer>0</layer>
-            </effect>
-        </queue>
-    </effectProvider>
-    <viewport>
-        <group key="GA401IV_0">
-            <device>
-                <matrix_w>68</matrix_w>
-                <matrix_h>28</matrix_h>
-                <slash_h>36</slash_h>
-                <model>GA401IV</model>
-                <type>MATRIX_Laptop</type>
-                <direction>0</direction>
-                <rgb>0</rgb>
-                <index>0</index>
-                <location>
-                    <x>0</x>
-                    <y>0</y>
-                </location>
-                <usage>
-                    <led key="-1" />
-                </usage>
-            </device>
-        </group>
-    </viewport>
-    <effectList></effectList>
-</root>`
 )
 
 func runMeElevated() {
@@ -151,11 +113,11 @@ func main() {
 		}
 		log.Printf("Backup LED matrix XML to %s", backup_led_matrix_xml_path)
 		// this xml file is used to turn off the led matrix as it has no anime in it
-		err = ioutil.WriteFile(empty_led_matrix_xml_path, []byte(empty_led_matrix_xml), 0644)
+		_, err = os.Create(empty_led_matrix_xml_path)
 		if err != nil {
-			log.Fatalf("Write empty LED matrix XML: %v", err)
+			log.Fatalf("Create empty LED matrix XML: %v", err)
 		}
-		log.Printf("Write empty LED matrix XML to %s", empty_led_matrix_xml_path)
+		log.Printf("Create empty LED matrix XML %s", empty_led_matrix_xml_path)
 	}
 
 	// if anime is on, we turn it off
